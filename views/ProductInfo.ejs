@@ -52,14 +52,14 @@
 
     <ul style="list-style: none;">
       <li class = "center"> <img src=<%= image %> height="200" width="200">
-        <span class = "asdf"><%= title + " " + bbPrice %>
+        <span class = "asdf"><%= title + " $" + bbPrice %>
         </span>
-        <p>Amazon Price : <%= !isNaN(azPrice) ? azPrice : 'Not on Amazon' %></p>
+        <p> The Difference between Amazon Price and Best Buy Price $<%= pricePoints[3] %> </p>
+        <p>Amazon Price $: <%= !isNaN(azPrice) ? azPrice : 'Not on Amazon' %></p>
         <% if (!isNaN(azPrice)) { %>
-          <p>Price point 1 : <%= pricePoints[0] %></p>
-          <p>Price point 2 : <%= pricePoints[1] %></p>
-          <p>Price point 3 : <%= pricePoints[2] %></p>
-          <p> The Difference between Amazon Price and Best Buy Price <%= pricePoints[3] %> </p>
+          <p>Price point 1 : $<%= pricePoints[0] %></p>
+          <p>Price point 2 : $<%= pricePoints[1] %></p>
+          <p>Price point 3 : $<%= pricePoints[2] %></p>
         <% } %>
       </li>
     </ul>
