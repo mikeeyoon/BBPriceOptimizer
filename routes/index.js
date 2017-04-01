@@ -18,7 +18,7 @@ router.get('/search', function(req, res, next) {
 
   rp(options)
   .then(function(json) {
-      res.render('index', {list: json.searchApi.documents});
+      res.render('index', {productList: json.searchApi.documents});
   });
 
 
@@ -28,13 +28,20 @@ router.get('/search', function(req, res, next) {
 router.get('/product/:id', function(req, res, next) {
 
   var skuId = req.params.id;
-  console.log(skuId);
-
   //res.render('index', {restaurant: response.jsonBody.businesses[0]});
+  var options = {
+    uri: 'https://msi.bbycastatic.ca/mobile-si/si/v4/pdp/overview/' + skuId + '?lang=en',
+    json: true
+  }
+
+
+  rp(options)
+  .then(function(json) {
+      res.render('productInfo', { product: json.overview });
+  });
 
 
 
-  res.render('ProductInfo', { title: 'Express' });
 
 });
 
