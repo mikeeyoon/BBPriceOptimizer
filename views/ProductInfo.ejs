@@ -126,14 +126,29 @@
 </div>
 
 
-    <select>
-      <option value="" disabled selected></option>
-      <option id="city_1"></option>
-      <option id="city_2"></option>
-    </select>
 
-    <canvas id="myChart" width="400" height="400"></canvas>
-
+    <div id="city_graph" style="height: 400px; width: 400px; display: inline-block;">
+      <select id="city_select">
+        <option value="" disabled selected></option>
+        <option id="city_1" data="#myChart"></option>
+        <option id="city_2" data="#myChart2"></option>
+      </select>
+      <canvas id="myChart" width="100" height="100" style="display: none;"></canvas>
+      <canvas id="myChart2" width="100" height="100" style="display: none;"></canvas>
+    </div>
+    <div id="age_graph" style="height: 400px; width: 400px; display: inline-block; margin-right: 30px;">
+      <select id="age_select">
+        <option value="" disabled selected></option>
+        <option id="age_0" data="#myChart3">0-20</option>
+        <option id="age_20" data="#myChart4">20-40</option>
+        <option id="age_40" data="#myChart5">40-60</option>
+        <option id="age_60" data="#myChart6">60-80</option>
+      </select>
+      <canvas id="myChart3" width="100" height="100" style="display: none;"></canvas>
+      <canvas id="myChart4" width="100" height="100" style="display: none;"></canvas>
+      <canvas id="myChart5" width="100" height="100" style="display: none;"></canvas>
+      <canvas id="myChart6" width="100" height="100" style="display: none;"></canvas>
+    </div>
     <!-- jQuery Version 1.11.1 -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
@@ -149,49 +164,164 @@ jQuery.noConflict();
     $.getJSON('/data/cityData.json', function(json) {
       var city_1 = json.cityData[0];
       var city_2 = json.cityData[1];
-      console.log(json.cityData[0]);
       $('#city_1').val(city_1.cityName);
       $('#city_1').text(city_1.cityName);
       $('#city_2').val(city_2.cityName);
       $('#city_2').text(city_2.cityName);
 
+      var arr1 = [];
+      var vals1 = [];
+      for (var k in city_1.products[0].someProduct1.saleData) {
+        arr1.push(k);
+        vals1.push(city_1.products[0].someProduct1.saleData[String(k)].sale);
+      }
+      var arr2 = [];
+      var vals2 = [];
+      for (var k in city_2.products[0].someProduct1.saleData) {
+        arr2.push(k);
+        vals2.push(city_2.products[0].someProduct1.saleData[String(k)].sale);
+      }
+      var arr3 = [];
+      var vals3 = [];
+      for (var k in json.demographicData[0]["0-20"]) {
+        arr3.push(k);
+        vals3.push(json.demographicData[0]["0-20"][String(k)]);
+      }
+      var arr4 = [];
+      var vals4 = [];
+      for (var k in json.demographicData[1]["20-40"]) {
+        arr4.push(k);
+        vals4.push(json.demographicData[1]["20-40"][String(k)]);
+      }
+      var arr5 = [];
+      var vals5 = [];
+      for (var k in json.demographicData[2]["40-60"]) {
+        arr5.push(k);
+        vals5.push(json.demographicData[2]["40-60"][String(k)]);
+      }
+      var arr6 = [];
+      var vals6 = [];
+      for (var k in json.demographicData[3]["60-80"]) {
+        arr6.push(k);
+        vals6.push(json.demographicData[3]["60-80"][String(k)]);
+      }
+
       var ctx = $("#myChart");
-      var chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-          datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255,99,132,1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero:true
-              }
+      var ctx2 = $("#myChart2");
+      var ctx3 = $("#myChart3");
+      var ctx4 = $("#myChart4");
+      var ctx5 = $("#myChart5");
+      var ctx6 = $("#myChart6");
+
+      var chartMakerCity = function(chart, array, values) {
+        return new Chart(chart, {
+          type: 'bar',
+          data: {
+            labels: array,
+            datasets: [{
+              label: 'City Sales/Price Point',
+              data: values,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+              ],
+              borderWidth: 1
             }]
+          },
+          options: {
+            scales: {
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Price Point'
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero:true
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Number of Sales'
+                }
+              }]
+            }
           }
-        }
+        });
+      };
+
+      var chartMakerAge = function(chart, array, values) {
+        return new Chart(chart, {
+          type: 'bar',
+          data: {
+            labels: array,
+            datasets: [{
+              label: 'Age Range Sales/Price Point',
+              data: values,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Price Point'
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero:true
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Number of Sales'
+                }
+              }]
+            }
+          }
+        });
+      };
+
+      var chart = chartMakerCity(ctx, arr1, vals1);
+      var chart2 = chartMakerCity(ctx2, arr2, vals2);
+      var chart3 = chartMakerAge(ctx3, arr3, vals3);
+      var chart4 = chartMakerAge(ctx4, arr4, vals4);
+      var chart5 = chartMakerAge(ctx5, arr5, vals5);
+      var chart6 = chartMakerAge(ctx6, arr6, vals6);
+
+      $('#city_select').change(function() {
+        var selected = $(this).find(':selected').attr('data');
+        $('#city_graph canvas').css('display', 'none');
+        $(selected).css('display', 'block');
       });
+
+      $('#age_select').change(function() {
+        var selected = $(this).find(':selected').attr('data');
+        $('#age_graph canvas').css('display', 'none');
+        $(selected).css('display', 'block');
+      });
+
     });
   });
 })(jQuery);
