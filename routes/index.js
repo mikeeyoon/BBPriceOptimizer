@@ -27,4 +27,8 @@ router.get('/search', function(req, res, next) {
 
 });
 
+router.get('/products', function(req, res, next) {
+  res.render('ProductInfo', { title: 'Express' });
+});
+
 module.exports = router;
