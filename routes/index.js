@@ -31,7 +31,6 @@ router.get('/search', function(req, res, next) {
 
 router.get('/product/:id', function(req, res, next) {
   var skuId = req.params.id;
-  console.log(skuId);
   var model;
   var options = {
     uri: 'https://msi.bbycastatic.ca/mobile-si/si/v4/pdp/overview/' + skuId,
