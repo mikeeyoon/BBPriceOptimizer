@@ -109,8 +109,8 @@ var scrape_camel = function(search_query) {
           Number(price_new);
         }
       } else {
-        price_amazon = Number(firstItem.find('.price_amazon').text().trim().substr(1)).toFixed(2);
-        price_new = Number(firstItem.find('.price_new').text().trim().substr(1)).toFixed(2);
+        price_amazon = Number(firstItem.find('.price_amazon').text().trim().substr(1).replace(/,/g, ''));
+        price_new = Number(firstItem.find('.price_new').text().trim().substr(1).replace(/,/g, ''));
       }
       var lowest_price;
       if (isNaN(price_amazon) && isNaN(price_new)) {
@@ -144,7 +144,7 @@ var calculatePrices = function(az, bb) {
     high_price = az;
   }
 
-  var diff = high_price - lowest_price;
+  var diff = (high_price - lowest_price).toFixed(2);
   p1 = (lowest_price + diff * 0.25).toFixed(2);
   p2 = (lowest_price + diff * 0.5).toFixed(2);
   p3 = (lowest_price + diff * 0.75).toFixed(2);
