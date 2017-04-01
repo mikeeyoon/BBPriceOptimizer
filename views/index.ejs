@@ -42,7 +42,7 @@
     <!-- Search box -->
 
     <form action="/search" style = "margin-bottom : 50px;">
-        <input type="text" class="form-control" placeholder="Search" name="query" style = "height : 75px;">
+        <input type="text" class="form-control" placeholder="Search" name="query" style="height: 75px; margin-top: 10px; font-size: 30px;">
     </form>
 
     <!-- list of products -->
@@ -50,7 +50,7 @@
       <% for (var i = 0; i < productList.length; i++) { %>
           <div class = "rows">
         <div class = "columns">
-          <div  class="col-md-4" style="border: 1px solid #cccccc; padding-top: 20px;">
+          <div  class="col-md-4" style="box-shadow: 0 0 4px #bababa; padding-top: 20px; border-radius: 4px; width: 32.333%; margin: 0.5%;">
         <a href="/product/<%= productList[i].skuId %>">
 
           <ul class="list-group list-group-flush" style="list-style: none;">
