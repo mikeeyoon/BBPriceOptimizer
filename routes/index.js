@@ -114,7 +114,7 @@ var scrape_camel = function(search_query) {
       }
       var lowest_price;
       if (isNaN(price_amazon) && isNaN(price_new)) {
-        lowest_price = 0;
+        lowest_price = NaN;
       } else if (isNaN(price_amazon)) {
         lowest_price = price_new;
       } else if (isNaN(price_new)) {
