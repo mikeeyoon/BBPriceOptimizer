@@ -34,14 +34,14 @@
 
 <body>
     <div class="header-cont">
-    <h2 style="color: white" align = "center">BBPriceOptimizer</p>
-</div>
+        <h2 style="color: white" align = "center">BBPriceOptimizer</p>
+    </div>
     <div class = "container-fluid">
 
 
     <!-- Search box -->
 
-    <form action="/search">
+    <form action="/search" style = "margin-bottom : 50px;">
         <input type="text" class="form-control" placeholder="Search" name="query">
 
     </form>
@@ -51,7 +51,7 @@
       <% for (var i = 0; i < productList.length; i++) { %>
           <div class = "rows">
         <div class = "columns">
-          <div  class="col-md-12">
+          <div  class="col-md-4">
         <a href="/product/<%= productList[i].skuId %>">
 
           <ul class="list-group list-group-flush" style="list-style: none;">
@@ -75,6 +75,7 @@
     <script src="js/bootstrap.min.js"></script>
 
 
+</div>
 </body>
 
 </html>

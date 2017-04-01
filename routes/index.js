@@ -31,7 +31,6 @@ router.get('/search', function(req, res, next) {
 
 router.get('/product/:id', function(req, res, next) {
   var skuId = req.params.id;
-  console.log(skuId);
   var model;
   var options = {
     uri: 'https://msi.bbycastatic.ca/mobile-si/si/v4/pdp/overview/' + skuId,
@@ -47,23 +46,27 @@ router.get('/product/:id', function(req, res, next) {
   .then(function() {
     scrape_camel(model)
     .then(function(price) {
+      var pricePoints = calculatePrices(price, bestBuyPrice);
       res.render('ProductInfo',
       {
         bbPrice: bestBuyPrice,
         azPrice: price,
         title: title,
-        image: image
+        image: image,
+        pricePoints: pricePoints
       });
     })
     .catch(function(e) {
       scrape_camel(title)
       .then(function(price) {
+        var pricePoints = calculatePrices(price, bestBuyPrice);
         res.render('ProductInfo',
         {
           bbPrice: bestBuyPrice,
           azPrice: price,
           title: title,
-          image: image
+          image: image,
+          pricePoints: pricePoints
         });
       });
     });
@@ -103,6 +106,26 @@ var scrape_camel = function(search_query) {
       resolve(lowest_price);
     });
   });
+}
+
+var calculatePrices = function(az, bb) {
+  var lowest_price;
+  var high_price;
+  if (isNaN(az)) {
+    return null;
+  } else if (az < bb) {
+    lowest_price = az;
+    high_price = bb;
+  } else {
+    lowest_price = bb;
+    high_price = az;
+  }
+
+  var diff = high_price - lowest_price;
+  p1 = (lowest_price + (diff*0.25)).toFixed(2);
+  p2 = (lowest_price + (diff*0.5)).toFixed(2);
+  p3 = (lowest_price + (diff*0.75)).toFixed(2);
+  return [p1, p2, p3, diff];
 }
 
 module.exports = router;

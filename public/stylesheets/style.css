@@ -1,6 +1,15 @@
 
 .asdf {
     display: block;
+    height: 100px;
+    width: 100%;
+    max-width: 300px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:    border-box;
+    box-sizing:         border-box;
+    margin-left:  auto;
+    margin-right: auto;
+
 }
 .center {
     text-align: center;

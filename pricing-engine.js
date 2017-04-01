@@ -19,8 +19,8 @@ function calculatePrices(az, bb){
     }
 
     var diff = high_price - lowest_price;
-    p1 = lowest_price + (diff*0.25);
-    p2 = lowest_price + (diff*0.5);
-    p3 = lowest_price + (diff*0.75);
+    p1 = lowest_price + (diff*0.25).toFixed(2);
+    p2 = lowest_price + (diff*0.5).toFixed(2);
+    p3 = lowest_price + (diff*0.75).toFixed(2);
     p4 = high_price;
 }
