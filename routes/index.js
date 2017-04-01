@@ -14,19 +14,20 @@ router.get('/search', function(req, res, next) {
   var query = req.query.query;
   if (!query) {
     res.render('index');
-  }
-  var options = {
-    uri: 'https://msi.bbycastatic.ca/mobile-si/si/v3/products/search',
-    qs: {
-      query: query,
-      lang: 'en'
-    },
-    json: true
-  }
-  rp(options)
-  .then(function(json) {
+  } else {
+    var options = {
+      uri: 'https://msi.bbycastatic.ca/mobile-si/si/v3/products/search',
+      qs: {
+        query: query,
+        lang: 'en'
+      },
+      json: true
+    }
+    rp(options)
+    .then(function(json) {
       res.render('index', {productList: json.searchApi.documents});
-  });
+    });
+  }
 });
 
 router.get('/product/:id', function(req, res, next) {
