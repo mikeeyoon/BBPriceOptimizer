@@ -18,6 +18,10 @@
     width:100%;
     position: absolute;
     top:0px;
-    background: blue;
+    background: #003b64;
     height: 64px;
+}
+.link-styles{
+    color: white;
+    font-size: 20px;
 }
