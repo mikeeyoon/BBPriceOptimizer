@@ -47,6 +47,7 @@ router.get('/product/:id', function(req, res, next) {
   .then(function() {
     scrape_camel(model)
     .then(function(price) {
+      console.log('b');
       var pricePoints = calculatePrices(price, bestBuyPrice);
       res.render('ProductInfo',
       {
@@ -60,6 +61,7 @@ router.get('/product/:id', function(req, res, next) {
     .catch(function(e) {
       scrape_camel(title)
       .then(function(price) {
+        console.log('c');
         var pricePoints = calculatePrices(price, bestBuyPrice);
         res.render('ProductInfo',
         {
@@ -71,12 +73,14 @@ router.get('/product/:id', function(req, res, next) {
         });
       })
       .catch(function(err) {
+        console.log('d');
         res.render('ProductInfo',
         {
           bbPrice: bestBuyPrice,
           azPrice: NaN,
           title: title,
-          image: image
+          image: image,
+          pricePoints: null
         });
       })
     });

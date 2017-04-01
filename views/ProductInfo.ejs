@@ -54,7 +54,9 @@
       <li class = "center"> <img src=<%= image %> height="200" width="200">
         <span class = "asdf"><%= title + " $" + bbPrice %>
         </span>
-        <p> The Difference between Amazon Price and Best Buy Price $<%= pricePoints[3] %> </p>
+        <% if (!isNaN(azPrice)) { %>
+          <p> The Difference between Amazon Price and Best Buy Price $<%= pricePoints[3] %> </p>
+        <% } %>
         <p>Amazon Price $: <%= !isNaN(azPrice) ? azPrice : 'Not on Amazon' %></p>
         <% if (!isNaN(azPrice)) { %>
           <p>Price point 1 : $<%= pricePoints[0] %></p>
