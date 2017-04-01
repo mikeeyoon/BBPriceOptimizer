@@ -69,7 +69,16 @@ router.get('/product/:id', function(req, res, next) {
           image: image,
           pricePoints: pricePoints
         });
-      });
+      })
+      .catch(function(err) {
+        res.render('ProductInfo',
+        {
+          bbPrice: bestBuyPrice,
+          azPrice: NaN,
+          title: title,
+          image: image
+        });
+      })
     });
   });
 });
