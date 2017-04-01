@@ -36,7 +36,7 @@ function getCamelPrice(productModel, productName) {
           }
 
           return resultObject;
-        });  
+        });
       })
     }
   })
