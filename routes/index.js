@@ -126,7 +126,7 @@ var calculatePrices = function(az, bb) {
   p1 = (lowest_price + (diff*0.25)).toFixed(2);
   p2 = (lowest_price + (diff*0.5)).toFixed(2);
   p3 = (lowest_price + (diff*0.75)).toFixed(2);
-  return [p1, p2, p3];
+  return [p1, p2, p3, diff];
 }
 
 module.exports = router;

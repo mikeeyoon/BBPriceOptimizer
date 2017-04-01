@@ -12,7 +12,8 @@
     <title>BBC</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../stylesheets/style.css">
 
     <!-- Custom CSS -->
     <style>
@@ -32,8 +33,17 @@
 </head>
 
 <body>
+    <div class="header-cont">
+    <h2 style="color: white" align = "center">BBPriceOptimizer</p>
+    </div>
 
+    <div class = "container-fluid">
     <!-- Search box -->
+
+
+    <form action="/search" style = "margin-bottom : 50px;">
+        <input type="text" class="form-control" placeholder="Search" name="query">
+    </form>
 
 
 
@@ -44,10 +54,11 @@
       <li class = "center"> <img src=<%= image %> height="200" width="200">
         <span class = "asdf"><%= title + " " + bbPrice %>
         </span>
-        <p><%= !isNaN(azPrice) ? azPrice : 'Not on Amazon' %></p>
-        <p><%= pricePoints[0] %></p>
-        <p><%= pricePoints[1] %></p>
-        <p><%= pricePoints[2] %></p>
+        <p>Amazon Price : <%= !isNaN(azPrice) ? azPrice : 'Not on Amazon' %></p>
+        <p>Price point 1 : <%= pricePoints[0] %></p>
+        <p>Price point 2 : <%= pricePoints[1] %></p>
+        <p>Price point 3 : <%= pricePoints[2] %></p>
+        <p> The Difference between Amazon Price and Best Buy Price <%= pricePoints[3] %> </p>
       </li>
     </ul>
 
@@ -56,6 +67,8 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+
+</div>
 
 </body>
 
