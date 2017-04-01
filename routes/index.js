@@ -37,19 +37,17 @@ router.get('/product/:id', function(req, res, next) {
   .then(function(json) {
     model = json.overview.manufacturerId.modelNumber;
     title = json.overview.names.short;
-    res.render('productInfo', { product: json.overview });
+    // res.render('productInfo', { product: json.overview });
   })
   .then(function() {
     scrape_camel(model)
     .then(function(prices) {
-      console.log(prices[0]);
-      console.log(prices[1]);
+      console.log(prices);
     })
     .catch(function(e) {
       scrape_camel(title)
       .then(function(prices) {
-        console.log(prices[0]);
-        console.log(prices[1]);
+        console.log(prices);
       });
     });
   });
@@ -70,7 +68,19 @@ var scrape_camel = function(search_query) {
       }
       var price_amazon = firstItem.find('.price_amazon').text().trim();
       var price_new = firstItem.find('.price_new').text().trim();
-      resolve([price_amazon, price_new]);
+      var lowest_price;
+      if (price_amazon === "Not in Stock" && price_new === "Not in Stock") {
+        lowest_price = 0;
+      } else if (price_amazon === "Not in Stock" && price_new !== "Not in Stock") {
+        lowest_price = Number(price_new.substr(1)).toFixed(2);
+      } else if (price_amazon !== "Not in Stock" && price_new === "Not in Stock") {
+        lowest_price = Number(price_amazon.substr(1)).toFixed(2);
+      } else if (price_amazon < price_new) {
+        lowest_price = Number(price_amazon.substr(1)).toFixed(2);
+      } else {
+        lowest_price = Number(price_new.substr(1)).toFixed(2);
+      }
+      resolve(lowest_price);
     });
   });
 }
