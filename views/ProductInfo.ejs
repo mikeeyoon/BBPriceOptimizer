@@ -41,9 +41,10 @@
     <% if (typeof product !== 'undefined') { %>
 
           <ul style="list-style: none;">
-            <li> <img src= <%= product.media.primaryImage.url %> height="200" width="200"> </li>
-            <li><%= product.names.short %></li>
-            <li><%= product.priceBlock.itemPrice.currentPrice %></li>
+            <li class = "center"> <img src= <%= product.media.primaryImage.url %> height="200" width="200">
+                <span class = "asdf"><%= product.names.short + " " + product.priceBlock.itemPrice.currentPrice %>
+                </span>
+            </li>
           </ul>
 
     <% } %>

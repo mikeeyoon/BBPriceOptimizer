@@ -13,6 +13,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/style.css">
 
     <!-- Custom CSS -->
     <style>
@@ -32,6 +33,11 @@
 </head>
 
 <body>
+    <div class="header-cont">
+    <h2 style="color: white" align = "center">BBPriceOptimizer</p>
+</div>
+    <div class = "container-fluid">
+
 
     <!-- Search box -->
 
@@ -39,36 +45,27 @@
         <input type="text" class="form-control" placeholder="Search" name="query">
 
     </form>
-<<<<<<< HEAD
-    <!-- list of restaurants -->
-    <% if (typeof list !== 'undefined') { %>
-      <% for (var i = 0; i < list.length; i++) { %>
-          <div class = "container-fluid">
-        <a href="/product/<%= list[i].skuId %>">
 
-          <ul class=".container-fluid">
-            <li class = "list-group-item"> <img src= <%= list[i].summary.media.primaryImage.url %> height="200" width="200">
-                <%= list[i].summary.names.short + " " + list[i].skuId %></li>
-=======
     <!-- list of products -->
     <% if (typeof productList !== 'undefined') { %>
       <% for (var i = 0; i < productList.length; i++) { %>
+          <div class = "rows">
+        <div class = "columns">
+          <div  class="col-md-12">
         <a href="/product/<%= productList[i].skuId %>">
 
-          <ul style="list-style: none;">
-            <li> <img src= <%= productList[i].summary.media.primaryImage.url %> height="200" width="200"> </li>
-            <li><%= productList[i].summary.names.short %></li>
-            <li><%= productList[i].skuId %></li>
->>>>>>> 6c964f4537b0de889d47a34ab84d8f2653986d11
+          <ul class="list-group list-group-flush" style="list-style: none;">
+            <li class="center"> <img src= <%= productList[i].summary.media.primaryImage.url %> height="200" width="200">
+                <span class="asdf"><%= productList[i].summary.names.short + " " + productList[i].skuId  %> </span>
+            </li>
           </ul>
 
         </a>
     </div>
+</div>
+</div>
       <% } %>
     <% } %>
-
-
-
 
 
     <!-- jQuery Version 1.11.1 -->
@@ -76,6 +73,7 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+
 
 </body>
 

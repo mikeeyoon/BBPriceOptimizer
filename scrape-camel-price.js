@@ -1,32 +1,45 @@
 var request = require('request');
 var cheerio = require('cheerio');
-var fs = require('fs');
+var rp = require('request-promise');
 
+var resultObject;
 
 // scrapes price of given product name
-function getCamelPrice(productName) {
+// if model number result is null, trys to search with product name
+function getCamelPrice(productModel, productName) {
   var queryName = productName.replace(" ", "+");
 
-  request("https://ca.camelcamelcamel.com/search?sq=" + queryName, function(error, response, body) {
-    if(error) {
-      console.log("Error: " + error);
-    }
-
-    var $ = cheerio.load(body);
-
+  rp("https://ca.camelcamelcamel.com/search?sq=" + productModel).then(function($) {
     $("#products_list").find("tbody>tr").each(function() {
       var productTitle = $(this).find("td.product_info>.product_title").text().trim();
       var amazonPrice = $(this).find("td.current_price.last>div.price_amazon").text().trim();
       var thirdPartyNewPrice = $(this).find("td.current_price.last>div.price_new").text().trim();
 
-      var resultObject = {
+      resultObject = {
         "productTitle": productTitle,
         "lowestPrice": lowestPrice(amazonPrice, thirdPartyNewPrice)
       }
-
-      return resultObject;
     });
-  });
+
+    if (resultObject !== undefined) {
+      return resultObject;
+    } else {
+      rp("https://ca.camelcamelcamel.com/search?sq=" + queryName).then(function($) {
+        $("#products_list").find("tbody>tr").each(function() {
+          var productTitle = $(this).find("td.product_info>.product_title").text().trim();
+          var amazonPrice = $(this).find("td.current_price.last>div.price_amazon").text().trim();
+          var thirdPartyNewPrice = $(this).find("td.current_price.last>div.price_new").text().trim();
+
+          resultObject = {
+            "productTitle": productTitle,
+            "lowestPrice": lowestPrice(amazonPrice, thirdPartyNewPrice)
+          }
+
+          return resultObject;
+        });
+      })
+    }
+  })
 }
 
 // helper function to calculate the lowest price
