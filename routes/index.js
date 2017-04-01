@@ -3,9 +3,6 @@ var request = require('request');
 var rp = require('request-promise');
 var router = express.Router();
 
-var skuId;
-var modelNumber;
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -21,8 +18,18 @@ router.get('/search', function(req, res, next) {
 
   rp(options)
   .then(function(json) {
-    console.log(JSON.stringify(json.searchApi.documents[0].skuId));
+      res.render('index', {list: json.searchApi.documents});
   });
+
+
+});
+
+router.get('/product/:id', function(req, res, next) {
+
+  var skuId = req.params.id;
+  console.log(skuId);
+
+  //res.render('index', {restaurant: response.jsonBody.businesses[0]});
 
 
 });
