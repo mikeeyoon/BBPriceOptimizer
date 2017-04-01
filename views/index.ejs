@@ -6,6 +6,11 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div>
+      <form id = "productSearchForm" action = "/" method = "get">
+        <input placeholder="Product name" type = "text" name = "sizeNum" style="width: 25%;">
+        <input name="searchButton" type="button" value="Search" >
+      </form>
+    </div>
   </body>
 </html>
