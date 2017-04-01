@@ -43,6 +43,7 @@ router.get('/product/:id', function(req, res, next) {
     title = json.overview.names.short;
     bestBuyPrice = json.overview.priceBlock.itemPrice.currentPrice;
     image = json.overview.media.primaryImage.url;
+    images = json.overview.media.galleryImages;
   })
   .then(function() {
     scrape_camel(model)
@@ -54,6 +55,7 @@ router.get('/product/:id', function(req, res, next) {
         azPrice: price,
         title: title,
         image: image,
+        images: images,
         pricePoints: pricePoints
       });
     })
