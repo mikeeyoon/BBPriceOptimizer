@@ -38,16 +38,15 @@
 
 
     <!-- clicked product -->
-    <% if (typeof product !== 'undefined') { %>
 
-          <ul style="list-style: none;">
-            <li class = "center"> <img src= <%= product.media.primaryImage.url %> height="200" width="200">
-                <span class = "asdf"><%= product.names.short + " " + product.priceBlock.itemPrice.currentPrice %>
-                </span>
-            </li>
-          </ul>
 
-    <% } %>
+    <ul style="list-style: none;">
+      <li class = "center"> <img src=<%= image %> height="200" width="200">
+        <span class = "asdf"><%= title + " " + bbPrice %>
+        </span>
+        <p><%= !isNaN(azPrice) ? azPrice : 'Not on Amazon' %></p>
+      </li>
+    </ul>
 
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>

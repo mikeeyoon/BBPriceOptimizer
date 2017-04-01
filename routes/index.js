@@ -11,11 +11,14 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/search', function(req, res, next) {
-  var query = req.query.query
+  var query = req.query.query;
+  if (!query) {
+    res.render('index');
+  }
   var options = {
     uri: 'https://msi.bbycastatic.ca/mobile-si/si/v3/products/search',
     qs: {
-      query: 'samsung+s7',
+      query: query,
       lang: 'en'
     },
     json: true
@@ -28,6 +31,7 @@ router.get('/search', function(req, res, next) {
 
 router.get('/product/:id', function(req, res, next) {
   var skuId = req.params.id;
+  console.log(skuId);
   var model;
   var options = {
     uri: 'https://msi.bbycastatic.ca/mobile-si/si/v4/pdp/overview/' + skuId,
@@ -37,17 +41,30 @@ router.get('/product/:id', function(req, res, next) {
   .then(function(json) {
     model = json.overview.manufacturerId.modelNumber;
     title = json.overview.names.short;
-    // res.render('productInfo', { product: json.overview });
+    bestBuyPrice = json.overview.priceBlock.itemPrice.currentPrice;
+    image = json.overview.media.primaryImage.url;
   })
   .then(function() {
     scrape_camel(model)
-    .then(function(prices) {
-      console.log(prices);
+    .then(function(price) {
+      res.render('ProductInfo',
+      {
+        bbPrice: bestBuyPrice,
+        azPrice: price,
+        title: title,
+        image: image
+      });
     })
     .catch(function(e) {
       scrape_camel(title)
-      .then(function(prices) {
-        console.log(prices);
+      .then(function(price) {
+        res.render('ProductInfo',
+        {
+          bbPrice: bestBuyPrice,
+          azPrice: price,
+          title: title,
+          image: image
+        });
       });
     });
   });
@@ -55,6 +72,9 @@ router.get('/product/:id', function(req, res, next) {
 
 var scrape_camel = function(search_query) {
   return new Promise(function(resolve, reject) {
+    if (search_query.toLowerCase() == 'misc') {
+      reject();
+    }
     request("https://ca.camelcamelcamel.com/search?sq=" + search_query, function(error, response, body) {
       if(error) {
         console.log("Error: " + error);
