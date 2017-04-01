@@ -42,9 +42,9 @@
 
     <ul style="list-style: none;">
       <li class = "center"> <img src=<%= image %> height="200" width="200">
-        <span class = "asdf"><%= title + " " + bbPrice %>
-        </span>
-        <p><%= !isNaN(azPrice) ? azPrice : 'Not on Amazon' %></p>
+        <p><%= title%></p>
+        <p>BestBuy price: <%= bbPrice%></p>
+        <p>Amazon price: <%= !isNaN(azPrice) ? azPrice : 'Not on Amazon' %></p>
       </li>
     </ul>
 
