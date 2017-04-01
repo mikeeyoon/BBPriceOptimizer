@@ -24,6 +24,7 @@ router.get('/search', function(req, res, next) {
 
 });
 
+
 router.get('/product/:id', function(req, res, next) {
 
   var skuId = req.params.id;
@@ -31,6 +32,9 @@ router.get('/product/:id', function(req, res, next) {
 
   //res.render('index', {restaurant: response.jsonBody.businesses[0]});
 
+
+
+  res.render('ProductInfo', { title: 'Express' });
 
 });
 
