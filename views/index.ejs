@@ -42,15 +42,16 @@
     <!-- list of restaurants -->
     <% if (typeof list !== 'undefined') { %>
       <% for (var i = 0; i < list.length; i++) { %>
+          <div class = "container-fluid">
         <a href="/product/<%= list[i].skuId %>">
 
-          <ul style="list-style: none;">
-            <li> <img src= <%= list[i].summary.media.primaryImage.url %> height="200" width="200"> </li>
-            <li><%= list[i].summary.names.short %></li>
-            <li><%= list[i].skuId %></li>
+          <ul class=".container-fluid">
+            <li class = "list-group-item"> <img src= <%= list[i].summary.media.primaryImage.url %> height="200" width="200">
+                <%= list[i].summary.names.short + " " + list[i].skuId %></li>
           </ul>
 
         </a>
+    </div>
       <% } %>
     <% } %>
 
