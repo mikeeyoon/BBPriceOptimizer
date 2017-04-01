@@ -57,7 +57,7 @@
         <% if (!isNaN(azPrice)) { %>
           <p> The Difference between Amazon Price and Best Buy Price $<%= pricePoints[3] %> </p>
         <% } %>
-        <p>Amazon Price $: <%= !isNaN(azPrice) ? azPrice : 'Not on Amazon' %></p>
+        <p>Amazon Price: <%= !isNaN(azPrice) ? "$" + azPrice : 'Not on Amazon' %></p>
         <% if (!isNaN(azPrice)) { %>
           <p>Price point 1 : $<%= pricePoints[0] %></p>
           <p>Price point 2 : $<%= pricePoints[1] %></p>

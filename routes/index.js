@@ -47,7 +47,6 @@ router.get('/product/:id', function(req, res, next) {
   .then(function() {
     scrape_camel(model)
     .then(function(price) {
-      console.log('b');
       var pricePoints = calculatePrices(price, bestBuyPrice);
       res.render('ProductInfo',
       {
@@ -58,10 +57,10 @@ router.get('/product/:id', function(req, res, next) {
         pricePoints: pricePoints
       });
     })
-    .catch(function(e) {
+    .catch(function() {
       scrape_camel(title)
       .then(function(price) {
-        console.log('c');
+        console.log('yo');
         var pricePoints = calculatePrices(price, bestBuyPrice);
         res.render('ProductInfo',
         {
@@ -73,7 +72,6 @@ router.get('/product/:id', function(req, res, next) {
         });
       })
       .catch(function(err) {
-        console.log('d');
         res.render('ProductInfo',
         {
           bbPrice: bestBuyPrice,
@@ -82,7 +80,7 @@ router.get('/product/:id', function(req, res, next) {
           image: image,
           pricePoints: null
         });
-      })
+      });
     });
   });
 });
@@ -98,24 +96,33 @@ var scrape_camel = function(search_query) {
       }
 
       var $ = cheerio.load(body);
-
+      var price_amazon = '';
+      var price_new = '';
       var firstItem = $('td.current_price.last').first();
       if (firstItem.text().trim().length == 0) {
-        reject();
-      }
-      var price_amazon = firstItem.find('.price_amazon').text().trim();
-      var price_new = firstItem.find('.price_new').text().trim();
-      var lowest_price;
-      if (price_amazon === "Not in Stock" && price_new === "Not in Stock") {
-        lowest_price = 0;
-      } else if (price_amazon === "Not in Stock" && price_new !== "Not in Stock") {
-        lowest_price = Number(price_new.substr(1)).toFixed(2);
-      } else if (price_amazon !== "Not in Stock" && price_new === "Not in Stock") {
-        lowest_price = Number(price_amazon.substr(1)).toFixed(2);
-      } else if (price_amazon < price_new) {
-        lowest_price = Number(price_amazon.substr(1)).toFixed(2);
+        price_amazon = $('#dp_amazon').attr('x-camel-cur-price');
+        price_new = $('#dp_new').attr('x-camel-cur-price');
+        if (!price_amazon) {
+          reject();
+        } else {
+          Number(price_amazon);
+          Number(price_new);
+        }
       } else {
-        lowest_price = Number(price_new.substr(1)).toFixed(2);
+        price_amazon = Number(firstItem.find('.price_amazon').text().trim().substr(1)).toFixed(2);
+        price_new = Number(firstItem.find('.price_new').text().trim().substr(1)).toFixed(2);
+      }
+      var lowest_price;
+      if (isNaN(price_amazon) && isNaN(price_new)) {
+        lowest_price = 0;
+      } else if (isNaN(price_amazon)) {
+        lowest_price = price_new;
+      } else if (isNaN(price_new)) {
+        lowest_price = price_amazon;
+      } else if (price_amazon < price_new) {
+        lowest_price = price_amazon;
+      } else {
+        lowest_price = price_new;
       }
       resolve(lowest_price);
     });
@@ -123,6 +130,8 @@ var scrape_camel = function(search_query) {
 }
 
 var calculatePrices = function(az, bb) {
+  az = Number(az);
+  bb = Number(bb);
   var lowest_price;
   var high_price;
   if (isNaN(az)) {
@@ -136,9 +145,9 @@ var calculatePrices = function(az, bb) {
   }
 
   var diff = high_price - lowest_price;
-  p1 = (lowest_price + (diff*0.25)).toFixed(2);
-  p2 = (lowest_price + (diff*0.5)).toFixed(2);
-  p3 = (lowest_price + (diff*0.75)).toFixed(2);
+  p1 = (lowest_price + diff * 0.25).toFixed(2);
+  p2 = (lowest_price + diff * 0.5).toFixed(2);
+  p3 = (lowest_price + diff * 0.75).toFixed(2);
   return [p1, p2, p3, diff];
 }
 
