@@ -5,9 +5,6 @@ var fs = require('fs');
 var rp = require('request-promise');
 var router = express.Router();
 
-var skuId;
-var modelNumber;
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -25,7 +22,7 @@ router.get('/search', function(req, res, next) {
   }
   rp(options)
   .then(function(json) {
-    console.log(JSON.stringify(json.searchApi.documents[0].skuId));
+      res.render('index', {productList: json.searchApi.documents});
   });
 });
 
@@ -40,6 +37,7 @@ router.get('/product/:id', function(req, res, next) {
   .then(function(json) {
     model = json.overview.manufacturerId.modelNumber;
     title = json.overview.names.short;
+    res.render('productInfo', { product: json.overview });
   })
   .then(function() {
     scrape_camel(model)
