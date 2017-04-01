@@ -11,12 +11,10 @@ function getCamelPrice(productModel, productName) {
 
   rp("https://ca.camelcamelcamel.com/search?sq=" + productModel).then(function($) {
     $("#products_list").find("tbody>tr").each(function() {
-      var productTitle = $(this).find("td.product_info>.product_title").text().trim();
       var amazonPrice = $(this).find("td.current_price.last>div.price_amazon").text().trim();
       var thirdPartyNewPrice = $(this).find("td.current_price.last>div.price_new").text().trim();
 
       resultObject = {
-        "productTitle": productTitle,
         "lowestPrice": lowestPrice(amazonPrice, thirdPartyNewPrice)
       }
     });
@@ -25,17 +23,13 @@ function getCamelPrice(productModel, productName) {
       return resultObject;
     } else {
       rp("https://ca.camelcamelcamel.com/search?sq=" + queryName).then(function($) {
-        $("#products_list").find("tbody>tr").each(function() {
-          var productTitle = $(this).find("td.product_info>.product_title").text().trim();
-          var amazonPrice = $(this).find("td.current_price.last>div.price_amazon").text().trim();
-          var thirdPartyNewPrice = $(this).find("td.current_price.last>div.price_new").text().trim();
+        $("#watchforms>table").find("tbody>tr>td").each(function() {
+          var amazonPrice = $(this).find("span.black").text().trim();
+          var thirdPartyNewPrice = $(this).find("td.white-space:nowrap>span.black").text().trim();
 
-          resultObject = {
-            "productTitle": productTitle,
-            "lowestPrice": lowestPrice(amazonPrice, thirdPartyNewPrice)
-          }
+        var lowestPrice = lowestPrice(amazonPrice, thirdPartyNewPrice)
 
-          return resultObject;
+          return lowestPrice;
         });
       })
     }
