@@ -22,4 +22,8 @@ router.get('/search', function(req, res, next) {
   });
 });
 
+router.get('/product', function(req, res) {
+    res.render('ProductInfo', { title: 'BBPriceOptimizer'});
+});
+
 module.exports = router;
