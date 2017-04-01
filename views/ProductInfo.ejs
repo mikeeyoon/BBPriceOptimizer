@@ -49,10 +49,11 @@
 
     <!-- clicked product -->
 
+    <h4><%= title %></h4>
 
     <ul style="list-style: none;">
       <li class = "center"> <img src=<%= image %> height="200" width="200">
-        <span class = "asdf"><%= title + " $" + bbPrice %>
+        <span class = "asdf"><%= " $" + bbPrice %>
         </span>
         <% if (!isNaN(azPrice)) { %>
           <p> The Difference between Amazon Price and Best Buy Price $<%= pricePoints[3] %> </p>
