@@ -113,8 +113,6 @@
 
   <div class="col-md-6">
     <br>
-    <br>
-    <br>
     <p><%= " Best Buy Price : $" + bbPrice %>
     </p>
     <% if (!isNaN(azPrice)) { %>
@@ -125,6 +123,10 @@
       <p>Price point 1 : $<%= pricePoints[0] %></p>
       <p>Price point 2 : $<%= pricePoints[1] %></p>
       <p>Price point 3 : $<%= pricePoints[2] %></p>
+      <p>According to city data:</p>
+      <p class = "consumePrice"> </p>
+      <p>According to demographic data:</p>
+      <p class = "demoPrice"> </p>
     <% } %>
   </div>
 
@@ -172,6 +174,13 @@
 <script>
 jQuery.noConflict();
 (function($) {
+  var maxK1 = 0;
+  var maxK2 = 0;
+  var maxK3 = 0;
+  var maxK4 = 0;
+  var maxK5 = 0;
+  var maxK6 = 0;
+
   $(function() {
     $.getJSON('/data/cityData.json', function(json) {
       var city_1 = json.cityData[0];
@@ -183,37 +192,72 @@ jQuery.noConflict();
 
       var arr1 = [];
       var vals1 = [];
+      var maxVal1 = 0;
       for (var k in city_1.products[0].someProduct1.saleData) {
+        if (maxVal1 < parseInt(city_1.products[0].someProduct1.saleData[String(k)].sale)) {
+          maxVal1 = parseInt(city_1.products[0].someProduct1.saleData[String(k)].sale);
+          maxK1 = k;
+        }
         arr1.push(k);
         vals1.push(city_1.products[0].someProduct1.saleData[String(k)].sale);
       }
+
       var arr2 = [];
       var vals2 = [];
+      var maxVal2 = 0;
       for (var k in city_2.products[0].someProduct1.saleData) {
+        if (maxVal2 < parseInt(city_2.products[0].someProduct1.saleData[String(k)].sale)) {
+          maxVal2 = parseInt(city_2.products[0].someProduct1.saleData[String(k)].sale);
+          maxK2 = k;
+        }
         arr2.push(k);
         vals2.push(city_2.products[0].someProduct1.saleData[String(k)].sale);
       }
+
       var arr3 = [];
       var vals3 = [];
+      var maxVal3 = 0;
       for (var k in json.demographicData[0]["0-20"]) {
+        if (maxVal3 < parseInt(json.demographicData[0]["0-20"][String(k)])) {
+          maxVal3 = parseInt(json.demographicData[0]["0-20"][String(k)]);
+          maxK3 = k;
+        }
         arr3.push(k);
         vals3.push(json.demographicData[0]["0-20"][String(k)]);
       }
+
       var arr4 = [];
       var vals4 = [];
+      var maxVal4 = 0;
       for (var k in json.demographicData[1]["20-40"]) {
+        if (maxVal4 < parseInt(json.demographicData[1]["20-40"][String(k)])) {
+          maxVal4 = parseInt(json.demographicData[1]["20-40"][String(k)]);
+          maxK4 = k;
+        }
         arr4.push(k);
         vals4.push(json.demographicData[1]["20-40"][String(k)]);
       }
+
       var arr5 = [];
       var vals5 = [];
+      var maxVal5 = 0;
       for (var k in json.demographicData[2]["40-60"]) {
+        if (maxVal5 < parseInt(json.demographicData[2]["40-60"][String(k)])) {
+          maxVal5 = parseInt(json.demographicData[2]["40-60"][String(k)]);
+          maxK5 = k;
+        }
         arr5.push(k);
         vals5.push(json.demographicData[2]["40-60"][String(k)]);
       }
+
       var arr6 = [];
       var vals6 = [];
+      var maxVal6 = 0;
       for (var k in json.demographicData[3]["60-80"]) {
+        if (maxVal6 < parseInt(json.demographicData[3]["60-80"][String(k)])) {
+          maxVal6 = parseInt(json.demographicData[3]["60-80"][String(k)]);
+          maxK6 = k;
+        }
         arr6.push(k);
         vals6.push(json.demographicData[3]["60-80"][String(k)]);
       }
@@ -324,12 +368,76 @@ jQuery.noConflict();
 
       $('#city_select').change(function() {
         var selected = $(this).find(':selected').attr('data');
+        var selectedOption = $(this).find(':selected').attr('id');
+        if (selectedOption === "city_1") {
+          if(maxK1 == 0.25) {
+            $('p.consumePrice').text('Use price point 1');
+          } else if (maxK1 == 0.5) {
+            $('p.consumePrice').text('Use price point 2');
+          } else if (maxK1 == 0.75) {
+            $('p.consumePrice').text('Use price point 3');
+          } else {
+            $('p.consumePrice').text('Use Original BB price');
+          }
+        } else {
+          if(maxK2 == 0.25) {
+            $('p.consumePrice').text('Use price point 1');
+          } else if (maxK2 == 0.5) {
+            $('p.consumePrice').text('Use price point 2');
+          } else if (maxK2 == 0.75) {
+            $('p.consumePrice').text('Use price point 3');
+          } else {
+            $('p.consumePrice').text('Use Original BB price');
+          }
+        }
         $('#city_graph canvas').css('display', 'none');
         $(selected).css('display', 'block');
       });
 
       $('#age_select').change(function() {
         var selected = $(this).find(':selected').attr('data');
+        var selectedOption = $(this).find(':selected').attr('id');
+        if (selectedOption === "age_0") {
+          if(maxK3 == 0.25) {
+            $('p.demoPrice').text('Use price point 1');
+          } else if (maxK3 == 0.5) {
+            $('p.demoPrice').text('Use price point 2');
+          } else if (maxK3 == 0.75) {
+            $('p.demoPrice').text('Use price point 3');
+          } else {
+            $('p.demoPrice').text('Use Original BB price');
+          }
+        } else if (selectedOption === "age_20") {
+          if(maxK4 == 0.25) {
+            $('p.demoPrice').text('Use price point 1');
+          } else if (maxK4 == 0.5) {
+            $('p.demoPrice').text('Use price point 2');
+          } else if (maxK4 == 0.75) {
+            $('p.demoPrice').text('Use price point 3');
+          } else {
+            $('p.demoPrice').text('Use Original BB price');
+          }
+        } else if (selectedOption === "age_40") {
+          if(maxK5 == 0.25) {
+            $('p.demoPrice').text('Use price point 1');
+          } else if (maxK5 == 0.5) {
+            $('p.demoPrice').text('Use price point 2');
+          } else if (maxK5 == 0.75) {
+            $('p.demoPrice').text('Use price point 3');
+          } else {
+            $('p.demoPrice').text('Use Original BB price');
+          }
+        } else {
+          if(maxK6 == 0.25) {
+            $('p.demoPrice').text('Use price point 1');
+          } else if (maxK6 == 0.5) {
+            $('p.demoPrice').text('Use price point 2');
+          } else if (maxK6 == 0.75) {
+            $('p.demoPrice').text('Use price point 3');
+          } else {
+            $('p.demoPrice').text('Use Original BB price');
+          }
+        }
         $('#age_graph canvas').css('display', 'none');
         $(selected).css('display', 'block');
       });
